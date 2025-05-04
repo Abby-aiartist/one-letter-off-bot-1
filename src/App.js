@@ -24,6 +24,7 @@ export default function OneLetterOffGame() {
   const [message, setMessage] = useState("");
   const [history, setHistory] = useState(["game"]);
   const [isPlayerTurn, setIsPlayerTurn] = useState(true);
+  const [showInstructions, setShowInstructions] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -63,34 +64,56 @@ export default function OneLetterOffGame() {
   }
 
   return (
-    <div className="p-4 max-w-md mx-auto text-center">
-      <h1 className="text-2xl font-bold mb-4">One Letter Off: Bot Mode</h1>
-      <p className="text-xl mb-2">Current Word: <strong>{currentWord}</strong></p>
-      {isPlayerTurn ? (
-        <form onSubmit={handleSubmit} className="mb-2">
-          <input
-            type="text"
-            value={input}
-            maxLength={4}
-            onChange={(e) => setInput(e.target.value)}
-            className="border px-2 py-1 mr-2 rounded"
-          />
-          <button type="submit" className="bg-blue-500 text-white px-4 py-1 rounded">
-            Submit
+    <div style={{ fontFamily: "Arial, sans-serif", backgroundColor: "#f9fafb", padding: "2rem" }}>
+      <div style={{ backgroundColor: "#ffffff", borderRadius: "12px", padding: "2rem", maxWidth: "500px", margin: "0 auto", boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)" }}>
+        <h1 style={{ fontSize: "1.8rem", fontWeight: "bold", marginBottom: "1rem" }}>One Letter Off: Bot Mode</h1>
+        <p style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>Current Word: <strong>{currentWord}</strong></p>
+        {isPlayerTurn ? (
+          <form onSubmit={handleSubmit} style={{ marginBottom: "1rem" }}>
+            <input
+              type="text"
+              value={input}
+              maxLength={4}
+              onChange={(e) => setInput(e.target.value)}
+              style={{ border: "1px solid #ccc", padding: "0.5rem", borderRadius: "6px", marginRight: "0.5rem" }}
+            />
+            <button type="submit" style={{ backgroundColor: "#3b82f6", color: "white", padding: "0.5rem 1rem", borderRadius: "6px", border: "none" }}>
+              Submit
+            </button>
+          </form>
+        ) : (
+          <p style={{ fontStyle: "italic", color: "#6b7280" }}>Bot's turn...</p>
+        )}
+        <p style={{ fontSize: "0.9rem", color: "#374151", marginBottom: "1rem" }}>{message}</p>
+        <p style={{ fontSize: "1rem" }}>Score: {score}</p>
+        <div style={{ marginTop: "1.5rem", textAlign: "left" }}>
+          <h2 style={{ fontWeight: "600", marginBottom: "0.5rem" }}>History:</h2>
+          <ul style={{ paddingLeft: "1.2rem", listStyleType: "disc" }}>
+            {history.map((word, index) => (
+              <li key={index}>{word}</li>
+            ))}
+          </ul>
+        </div>
+        <div style={{ marginTop: "2rem" }}>
+          <button
+            onClick={() => setShowInstructions(!showInstructions)}
+            style={{ backgroundColor: "#e5e7eb", padding: "0.5rem 1rem", borderRadius: "6px", border: "none", cursor: "pointer" }}
+          >
+            {showInstructions ? "Hide" : "Show"} Instructions
           </button>
-        </form>
-      ) : (
-        <p className="italic text-gray-500">Bot's turn...</p>
-      )}
-      <p className="mb-2 text-sm text-gray-700">{message}</p>
-      <p className="text-lg">Score: {score}</p>
-      <div className="mt-4 text-left">
-        <h2 className="font-semibold">History:</h2>
-        <ul className="list-disc pl-5">
-          {history.map((word, index) => (
-            <li key={index}>{word}</li>
-          ))}
-        </ul>
+          {showInstructions && (
+            <div style={{ marginTop: "1rem", fontSize: "0.95rem", color: "#374151", backgroundColor: "#f3f4f6", padding: "1rem", borderRadius: "8px" }}>
+              <p><strong>How to Play:</strong></p>
+              <ul style={{ paddingLeft: "1.2rem", listStyleType: "disc" }}>
+                <li>You start with a 4-letter word.</li>
+                <li>Change only <strong>one letter</strong> to make a valid new word.</li>
+                <li>The bot will play its move. Then it's your turn again!</li>
+                <li>No repeating words.</li>
+                <li>Get stuck? The bot wins. Outplay the bot to win!</li>
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
